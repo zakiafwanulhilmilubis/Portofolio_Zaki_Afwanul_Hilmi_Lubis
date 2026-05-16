@@ -22,9 +22,7 @@
   }
 
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
   html { scroll-behavior: smooth; }
-
   body {
     font-family: 'DM Sans', sans-serif;
     background: var(--white);
@@ -37,7 +35,7 @@
     position: fixed; top: 0; left: 0; right: 0; z-index: 100;
     display: flex; align-items: center; justify-content: space-between;
     padding: 1.2rem 5%;
-    background: rgba(249,247,244,0.92);
+    background: rgba(249,247,244,0.95);
     backdrop-filter: blur(12px);
     border-bottom: 1px solid rgba(13,43,69,0.08);
     transition: box-shadow 0.3s;
@@ -60,6 +58,54 @@
     background: var(--accent); transition: width 0.3s;
   }
   .nav-links a:hover::after { width: 100%; }
+
+  /* ─── HAMBURGER ─── */
+  .hamburger {
+    display: none;
+    flex-direction: column;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+    z-index: 200;
+  }
+  .hamburger span {
+    display: block;
+    width: 24px;
+    height: 2px;
+    background: var(--navy);
+    border-radius: 2px;
+    transition: all 0.3s;
+  }
+  .hamburger.open span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.open span:nth-child(2) { opacity: 0; }
+  .hamburger.open span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+
+  /* ─── MOBILE MENU OVERLAY ─── */
+  .mobile-menu {
+    display: none;
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: rgba(249,247,244,0.98);
+    backdrop-filter: blur(16px);
+    z-index: 99;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+  }
+  .mobile-menu.open { display: flex; }
+  .mobile-menu a {
+    font-size: 1.4rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  .mobile-menu a:hover { color: var(--teal); }
 
   /* ─── HEX PATTERN ─── */
   .hex-bg {
@@ -90,13 +136,13 @@
   }
   .hero-name {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2.5rem, 5vw, 4.2rem);
+    font-size: clamp(2rem, 5vw, 4.2rem);
     font-weight: 900; line-height: 1.05;
     color: var(--navy); margin-bottom: 0.5rem;
   }
   .hero-script {
     font-family: 'Dancing Script', cursive;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(1.6rem, 4vw, 3rem);
     color: var(--teal); margin-bottom: 1.5rem;
     display: block;
   }
@@ -150,7 +196,6 @@
     flex-direction: column; gap: 1rem; color: rgba(255,255,255,0.7);
     font-size: 0.85rem; text-align: center; padding: 2rem;
   }
-  .hero-photo-placeholder svg { opacity: 0.5; }
   .bookmark-icon {
     position: absolute; top: 0; right: 10px; z-index: 3;
   }
@@ -175,7 +220,7 @@
   }
   .section-title {
     font-family: 'Playfair Display', serif;
-    font-size: clamp(2rem, 4vw, 3rem);
+    font-size: clamp(1.8rem, 4vw, 3rem);
     font-weight: 700; color: var(--navy);
     margin-bottom: 3rem; line-height: 1.2;
   }
@@ -183,7 +228,12 @@
 
   /* ─── PENDIDIKAN ─── */
   #pendidikan { background: var(--light-bg); }
-  .edu-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 2rem; max-width: 1400px; }
+  .edu-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 2rem;
+    max-width: 1400px;
+  }
   .edu-card {
     background: var(--card-bg); padding: 2rem 2rem 2rem 1.5rem;
     border-left: 4px solid var(--accent);
@@ -200,7 +250,7 @@
   }
   .edu-card:hover { transform: translateY(-4px); box-shadow: 0 12px 30px rgba(13,43,69,0.12); }
   .edu-icon { font-size: 2rem; margin-bottom: 1rem; }
-  .edu-school { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
+  .edu-school { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.4rem; }
   .edu-year { font-size: 0.85rem; color: var(--accent); font-weight: 600; }
 
   /* ─── PENGALAMAN KERJA ─── */
@@ -228,153 +278,81 @@
 
   /* ─── TOMBOL SERTIFIKAT ─── */
   .btn-sertifikat {
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--teal);
+    background: none; border: none; padding: 0; cursor: pointer;
+    font-size: 0.85rem; font-weight: 600; color: var(--teal);
     font-family: 'DM Sans', sans-serif;
-    display: inline-flex;
-    align-items: center;
-    gap: 0.4rem;
-    transition: gap 0.3s, color 0.3s;
-    margin-top: 0.5rem;
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    transition: gap 0.3s, color 0.3s; margin-top: 0.5rem;
   }
   .btn-sertifikat:hover { color: var(--accent); gap: 0.7rem; }
 
   /* ─── MODAL SERTIFIKAT ─── */
   #cert-modal {
-    display: none;
-    position: fixed;
-    inset: 0;
+    display: none; position: fixed; inset: 0;
     background: rgba(13, 43, 69, 0.75);
     backdrop-filter: blur(6px);
-    z-index: 9999;
-    align-items: center;
-    justify-content: center;
-    padding: 1rem;
-    animation: fadeIn 0.25s ease;
+    z-index: 9999; align-items: center; justify-content: center;
+    padding: 1rem; animation: fadeIn 0.25s ease;
   }
   #cert-modal.active { display: flex; }
 
-  @keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-  }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 
   .modal-box {
-    background: #fff;
-    width: 100%;
-    max-width: 860px;
-    height: 88vh;
-    border-radius: 16px;
-    overflow: hidden;
-    position: relative;
+    background: #fff; width: 100%; max-width: 860px; height: 88vh;
+    border-radius: 16px; overflow: hidden; position: relative;
     box-shadow: 0 32px 80px rgba(13,43,69,0.35);
-    display: flex;
-    flex-direction: column;
+    display: flex; flex-direction: column;
     animation: slideUp 0.3s ease;
   }
-
   @keyframes slideUp {
     from { opacity: 0; transform: translateY(24px); }
     to { opacity: 1; transform: translateY(0); }
   }
-
   .modal-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1.5rem;
-    background: var(--navy);
-    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 1rem 1.5rem; background: var(--navy); flex-shrink: 0;
   }
-
   .modal-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1rem;
-    color: var(--white);
-    font-weight: 700;
-    letter-spacing: 0.02em;
+    font-family: 'Playfair Display', serif; font-size: 1rem;
+    color: var(--white); font-weight: 700; letter-spacing: 0.02em;
   }
-
-  .modal-actions {
-    display: flex;
-    align-items: center;
-    gap: 0.75rem;
-  }
-
+  .modal-actions { display: flex; align-items: center; gap: 0.75rem; }
   .modal-btn-open {
-    font-size: 0.78rem;
-    font-weight: 600;
-    color: var(--accent);
-    background: none;
-    border: 1px solid var(--accent);
-    border-radius: 4px;
-    padding: 0.35rem 0.85rem;
-    cursor: pointer;
-    text-decoration: none;
-    transition: background 0.2s, color 0.2s;
-    font-family: 'DM Sans', sans-serif;
+    font-size: 0.78rem; font-weight: 600; color: var(--accent);
+    background: none; border: 1px solid var(--accent); border-radius: 4px;
+    padding: 0.35rem 0.85rem; cursor: pointer; text-decoration: none;
+    transition: background 0.2s, color 0.2s; font-family: 'DM Sans', sans-serif;
   }
   .modal-btn-open:hover { background: var(--accent); color: var(--navy); }
-
   .modal-close {
-    width: 32px; height: 32px;
-    border-radius: 50%;
-    background: rgba(255,255,255,0.12);
-    border: none;
-    cursor: pointer;
+    width: 32px; height: 32px; border-radius: 50%;
+    background: rgba(255,255,255,0.12); border: none; cursor: pointer;
     display: flex; align-items: center; justify-content: center;
-    color: var(--white);
-    font-size: 1.1rem;
-    transition: background 0.2s;
-    line-height: 1;
+    color: var(--white); font-size: 1.1rem; transition: background 0.2s; line-height: 1;
   }
   .modal-close:hover { background: rgba(255,255,255,0.25); }
-
-  #cert-frame {
-    flex: 1;
-    width: 100%;
-    border: none;
-    display: block;
-  }
+  #cert-frame { flex: 1; width: 100%; border: none; display: block; }
 
   /* ─── URL PREVIEW PANEL ─── */
   #modal-url-preview {
-    display: none;
-    flex: 1;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1.25rem;
-    padding: 2.5rem 2rem;
-    background: var(--light-bg);
+    display: none; flex: 1; flex-direction: column;
+    align-items: center; justify-content: center;
+    gap: 1.25rem; padding: 2.5rem 2rem; background: var(--light-bg);
   }
   .preview-icon { font-size: 4rem; }
-  .preview-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 1.4rem; font-weight: 700;
-    color: var(--navy); text-align: center;
-  }
-  .preview-url {
-    font-size: 0.8rem; color: var(--gray);
-    word-break: break-all; text-align: center;
-    max-width: 480px;
-  }
+  .preview-title { font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 700; color: var(--navy); text-align: center; }
+  .preview-url { font-size: 0.8rem; color: var(--gray); word-break: break-all; text-align: center; max-width: 480px; }
   .preview-btn {
     background: var(--navy); color: var(--white);
     padding: 0.85rem 2.2rem; border-radius: 4px;
     font-size: 0.9rem; font-weight: 600;
     text-decoration: none; letter-spacing: 0.04em;
-    transition: background 0.3s, transform 0.2s;
-    display: inline-block;
+    transition: background 0.3s, transform 0.2s; display: inline-block;
   }
   .preview-btn:hover { background: var(--teal); transform: translateY(-2px); }
 
-
+  /* ─── SKILLS ─── */
   #skills { background: var(--navy); }
   #skills .section-label { color: var(--accent-light); }
   #skills .section-title { color: var(--white); }
@@ -406,7 +384,7 @@
 
   /* ─── PROJECTS ─── */
   #projects { background: var(--white); }
-  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 2rem; }
+  .projects-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; }
   .project-card {
     background: var(--card-bg); border-radius: 12px;
     overflow: hidden; box-shadow: 0 4px 20px rgba(13,43,69,0.06);
@@ -418,8 +396,7 @@
     border-top-color: var(--accent);
   }
   .project-icon {
-    height: 120px; display: flex; align-items: center; justify-content: center;
-    font-size: 3rem;
+    height: 120px; display: flex; align-items: center; justify-content: center; font-size: 3rem;
   }
   .project-icon.p1 { background: linear-gradient(135deg, #e8f5e9, #c8e6c9); }
   .project-icon.p2 { background: linear-gradient(135deg, #e3f2fd, #bbdefb); }
@@ -428,23 +405,13 @@
   .project-icon.p5 { background: linear-gradient(135deg, #fff8e1, #ffecb3); }
   .project-icon.p6 { background: linear-gradient(135deg, #e0f2f1, #b2dfdb); }
   .project-body { padding: 1.5rem; }
-  .project-name {
-    font-family: 'Playfair Display', serif; font-size: 1.1rem;
-    font-weight: 700; color: var(--navy); margin-bottom: 0.5rem;
-  }
+  .project-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--navy); margin-bottom: 0.5rem; }
   .project-desc { font-size: 0.88rem; line-height: 1.6; color: #5a6f85; margin-bottom: 1rem; }
   .project-tags { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 1rem; }
   .project-tag {
     background: rgba(13,43,69,0.07); color: var(--teal);
-    padding: 0.3rem 0.75rem; border-radius: 100px;
-    font-size: 0.75rem; font-weight: 600;
+    padding: 0.3rem 0.75rem; border-radius: 100px; font-size: 0.75rem; font-weight: 600;
   }
-  .project-link {
-    font-size: 0.85rem; font-weight: 600; color: var(--teal);
-    text-decoration: none; display: inline-flex; align-items: center; gap: 0.4rem;
-    transition: gap 0.3s, color 0.3s;
-  }
-  .project-link:hover { color: var(--accent); gap: 0.7rem; }
 
   /* ─── CERTIFICATES ─── */
   #certificates { background: var(--light-bg); }
@@ -461,8 +428,7 @@
   .cert-name { font-size: 0.9rem; font-weight: 600; color: var(--navy); margin-bottom: 0.4rem; line-height: 1.4; }
   .cert-link {
     font-size: 0.78rem; color: var(--teal); text-decoration: none; font-weight: 500;
-    transition: color 0.2s;
-    background: none; border: none; cursor: pointer;
+    transition: color 0.2s; background: none; border: none; cursor: pointer;
     font-family: 'DM Sans', sans-serif; padding: 0;
     display: inline-flex; align-items: center; gap: 0.3rem;
   }
@@ -484,15 +450,14 @@
     background: var(--accent); display: flex; align-items: center; justify-content: center;
     flex-shrink: 0; font-size: 1.2rem;
   }
-  .contact-text { color: var(--white); font-size: 0.95rem; font-weight: 500; }
+  .contact-text { color: var(--white); font-size: 0.95rem; font-weight: 500; text-decoration: none; }
   .contact-right {
     background: rgba(255,255,255,0.05); border-radius: 12px;
     padding: 2.5rem; border: 1px solid rgba(255,255,255,0.1);
   }
   .contact-right p {
     font-family: 'Playfair Display', serif; font-style: italic;
-    font-size: 1.3rem; color: rgba(255,255,255,0.85); line-height: 1.6;
-    text-align: center;
+    font-size: 1.3rem; color: rgba(255,255,255,0.85); line-height: 1.6; text-align: center;
   }
   .contact-right .thankyou {
     font-family: 'Dancing Script', cursive;
@@ -518,20 +483,106 @@
   }
   .reveal.visible { opacity: 1; transform: translateY(0); }
 
-  /* ─── RESPONSIVE ─── */
+  /* ─── RESPONSIVE: TABLET (max 1024px) ─── */
+  @media (max-width: 1024px) {
+    .edu-grid { grid-template-columns: repeat(2, 1fr); }
+    #contact { grid-template-columns: 1fr; gap: 2.5rem; }
+    .skills-wrapper { gap: 2.5rem; }
+  }
+
+  /* ─── RESPONSIVE: MOBILE (max 768px) ─── */
   @media (max-width: 768px) {
-    #hero { grid-template-columns: 1fr; text-align: center; padding-top: 100px; }
-    .hero-left { order: 2; }
-    .hero-right { order: 1; padding-top: 0; }
-    .hero-desc { margin: 0 auto 2rem; }
-    .hero-btns { justify-content: center; }
-    .hero-photo-wrap { width: 260px; height: 320px; }
-    .hero-photo-placeholder { width: 230px; height: 300px; }
-    .edu-grid { grid-template-columns: 1fr; max-width: 100%; }
-    .skills-wrapper { grid-template-columns: 1fr; }
-    #contact { grid-template-columns: 1fr; }
+    /* Nav */
     .nav-links { display: none; }
+    .hamburger { display: flex; }
+
+    /* Sections */
+    section { padding: 60px 4%; }
+
+    /* Hero */
+    #hero {
+      grid-template-columns: 1fr;
+      text-align: center;
+      padding: 0 4%;
+      padding-top: 80px;
+      min-height: auto;
+      padding-bottom: 60px;
+      gap: 2rem;
+    }
+    .hero-left { order: 2; padding-top: 0; }
+    .hero-right { order: 1; padding-top: 60px; }
+    .hero-desc { margin: 0 auto 2rem; font-size: 0.95rem; }
+    .hero-btns { justify-content: center; }
+
+    /* Hero foto */
+    .hero-photo-wrap { width: 240px; height: 300px; }
+    .hero-photo {
+      width: 210px; height: 270px;
+      top: 15px; left: 15px;
+      box-shadow: 12px 12px 0 var(--accent);
+    }
+    .dots-pattern { top: -10px; left: -15px; }
+    .bookmark-icon { right: 5px; }
+
+    /* Education */
+    .edu-grid { grid-template-columns: 1fr; max-width: 100%; gap: 1rem; }
+
+    /* Skills */
+    .skills-wrapper { grid-template-columns: 1fr; gap: 2rem; }
+
+    /* Projects — 1 kolom di mobile kecil */
+    .projects-grid { grid-template-columns: 1fr; }
+
+    /* Work */
+    .work-grid { grid-template-columns: 1fr; }
+
+    /* Cert */
+    .cert-grid { grid-template-columns: 1fr; }
+
+    /* Contact */
+    #contact { grid-template-columns: 1fr; gap: 2rem; padding: 60px 4%; }
+    .contact-right { padding: 1.5rem; }
+    .contact-right p { font-size: 1.1rem; }
+    .contact-right .thankyou { font-size: 2.4rem; }
+
+    /* Modal */
     .modal-box { height: 92vh; border-radius: 12px; }
+    .modal-title { font-size: 0.85rem; }
+    .modal-btn-open { font-size: 0.72rem; padding: 0.3rem 0.6rem; }
+
+    /* Section title margin */
+    .section-title { margin-bottom: 2rem; }
+  }
+
+  /* ─── RESPONSIVE: SMALL MOBILE (max 480px) ─── */
+  @media (max-width: 480px) {
+    nav { padding: 1rem 4%; }
+    .nav-logo { font-size: 1.4rem; }
+
+    #hero { padding: 0 4% 50px; }
+    .hero-name { font-size: 2rem; }
+    .hero-script { font-size: 1.6rem; }
+
+    .hero-photo-wrap { width: 200px; height: 250px; }
+    .hero-photo {
+      width: 175px; height: 225px;
+      box-shadow: 10px 10px 0 var(--accent);
+    }
+
+    .btn-primary, .btn-outline { padding: 0.75rem 1.5rem; font-size: 0.85rem; width: 100%; text-align: center; }
+    .hero-btns { flex-direction: column; align-items: center; }
+
+    .edu-card { padding: 1.25rem 1.25rem 1.25rem 1rem; }
+    .edu-school { font-size: 1rem; }
+
+    .skill-tag { font-size: 0.8rem; padding: 0.4rem 0.8rem; }
+
+    .work-img { height: 140px; }
+    .project-icon { height: 150px; }
+
+    .contact-text { font-size: 0.85rem; }
+    .contact-circle { width: 40px; height: 40px; }
+    .contact-circle img { width: 40px; height: 40px; }
   }
 </style>
 </head>
@@ -548,7 +599,20 @@
     <li><a href="#certificates">Sertifikat</a></li>
     <li><a href="#contact">Kontak</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="Buka menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+
+<!-- MOBILE MENU -->
+<div class="mobile-menu" id="mobile-menu">
+  <a href="#pendidikan" onclick="closeMobileMenu()">Pendidikan</a>
+  <a href="#pengalaman" onclick="closeMobileMenu()">Pengalaman</a>
+  <a href="#skills" onclick="closeMobileMenu()">Skills</a>
+  <a href="#projects" onclick="closeMobileMenu()">Projects</a>
+  <a href="#certificates" onclick="closeMobileMenu()">Sertifikat</a>
+  <a href="#contact" onclick="closeMobileMenu()">Kontak</a>
+</div>
 
 <!-- ─── MODAL (reusable untuk sertifikat & project) ─── -->
 <div id="cert-modal" role="dialog" aria-modal="true" aria-label="Lihat Dokumen">
@@ -560,20 +624,13 @@
         <button class="modal-close" onclick="closeCertificate()" aria-label="Tutup">✕</button>
       </div>
     </div>
-
-    <!-- PDF viewer -->
     <iframe id="cert-frame" src="" title="PDF Viewer"></iframe>
-
-    <!-- URL eksternal preview -->
     <div id="modal-url-preview">
       <div class="preview-icon">🔗</div>
       <div id="modal-preview-title" class="preview-title"></div>
       <div id="modal-preview-url" class="preview-url"></div>
-      <a id="modal-preview-btn" href="#" target="_blank" class="preview-btn">
-        Buka Sertifikat →
-      </a>
+      <a id="modal-preview-btn" href="#" target="_blank" class="preview-btn">Buka Sertifikat →</a>
     </div>
-
   </div>
 </div>
 
@@ -660,75 +717,50 @@
   <div class="section-label">Experience</div>
   <h2 class="section-title">Pengalaman <span>Kerja</span></h2>
   <div class="work-grid reveal">
-
     <div class="work-card">
       <div class="work-img c4" style="padding:0; overflow:hidden;">
-        <img src="images/telkom.jpeg" alt="PT Telkom Indonesia"
-          style="width:100%; height:100%; object-fit:cover;">
+        <img src="images/telkom.jpeg" alt="PT Telkom Indonesia" style="width:100%; height:100%; object-fit:cover;">
       </div>
       <div class="work-info">
         <div class="work-role">Data Management</div>
         <div class="work-company">PT Telkom Indonesia</div>
         <div class="edu-year">01 April 2024 — 28 Juni 2024</div>
-        <button
-          class="btn-sertifikat"
-          onclick="openCertificate('images/sertifikat-telkom.pdf', 'Sertifikat — PT Telkom Indonesia')">
-          Lihat Sertifikat →
-        </button>
+        <button class="btn-sertifikat" onclick="openCertificate('images/sertifikat-telkom.pdf', 'Sertifikat — PT Telkom Indonesia')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="work-card">
       <div class="work-img c4" style="padding:0; overflow:hidden;">
-        <img src="images/bpjsk.jpeg" alt="BPJS Ketenagakerjaan"
-          style="width:100%; height:100%; object-fit:cover;">
+        <img src="images/bpjsk.jpeg" alt="BPJS Ketenagakerjaan" style="width:100%; height:100%; object-fit:cover;">
       </div>
       <div class="work-info">
         <div class="work-role">Tim Marketing</div>
         <div class="work-company">BPJS Ketenagakerjaan</div>
         <div class="edu-year">17 Sept 2024 — 20 Des 2024</div>
-        <button
-          class="btn-sertifikat"
-          onclick="openCertificate('images/sertifikat-bpjsk.pdf', 'Sertifikat — BPJS Ketenagakerjaan')">
-          Lihat Sertifikat →
-        </button>
+        <button class="btn-sertifikat" onclick="openCertificate('images/sertifikat-bpjsk.pdf', 'Sertifikat — BPJS Ketenagakerjaan')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="work-card">
       <div class="work-img c4" style="padding:0; overflow:hidden;">
-        <img src="images/shohabiyah.jpeg" alt="Yayasan Ash-Shohabiyah"
-          style="width:100%; height:100%; object-fit:cover;">
+        <img src="images/shohabiyah.jpeg" alt="Yayasan Ash-Shohabiyah" style="width:100%; height:100%; object-fit:cover;">
       </div>
       <div class="work-info">
         <div class="work-role">Guru & Pelaksana Tugas</div>
         <div class="work-company">Yayasan Ash-Shohabiyah</div>
         <div class="edu-year">01 April 2024 — 28 April 2024</div>
-        <button
-          class="btn-sertifikat"
-          onclick="openCertificate('images/sertifikat-shohabiyah.pdf', 'Sertifikat — Yayasan Ash-Shohabiyah')">
-          Lihat Sertifikat →
-        </button>
+        <button class="btn-sertifikat" onclick="openCertificate('images/sertifikat-shohabiyah.pdf', 'Sertifikat — Yayasan Ash-Shohabiyah')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="work-card">
       <div class="work-img c4" style="padding:0; overflow:hidden;">
-        <img src="images/souci.jpeg" alt="PT Souci Indoprima"
-          style="width:100%; height:100%; object-fit:cover;">
+        <img src="images/souci.jpeg" alt="PT Souci Indoprima" style="width:100%; height:100%; object-fit:cover;">
       </div>
       <div class="work-info">
         <div class="work-role">Admin IT</div>
         <div class="work-company">PT Souci Indoprima</div>
         <div class="edu-year">20 Oktober 2025 — 19 April 2026</div>
-        <button
-          class="btn-sertifikat"
-          onclick="openCertificate('images/sertifikat-souci.pdf', 'Sertifikat — PT Souci Indoprima')">
-          Lihat Sertifikat →
-        </button>
+        <button class="btn-sertifikat" onclick="openCertificate('images/sertifikat-souci.pdf', 'Sertifikat — PT Souci Indoprima')">Lihat Sertifikat →</button>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -739,7 +771,6 @@
   <div class="skills-wrapper reveal">
     <div>
       <div class="skill-cat-title">⚙️ Hard Skills</div>
-
       <p style="color:rgba(255,255,255,0.6);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;">Data Analyst</p>
       <div class="skill-tags">
         <span class="skill-tag">SQL</span>
@@ -747,7 +778,6 @@
         <span class="skill-tag">Power BI</span>
         <span class="skill-tag">PostgreSQL</span>
       </div>
-
       <p style="color:rgba(255,255,255,0.6);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;">Web Developer</p>
       <div class="skill-tags">
         <span class="skill-tag">HTML</span>
@@ -757,12 +787,10 @@
         <span class="skill-tag">Laravel</span>
         <span class="skill-tag">MySQL</span>
       </div>
-
       <p style="color:rgba(255,255,255,0.6);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;">Android Developer</p>
       <div class="skill-tags">
         <span class="skill-tag">Kotlin</span>
       </div>
-
       <p style="color:rgba(255,255,255,0.6);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;margin-bottom:0.75rem;">UI/UX Design & Edit</p>
       <div class="skill-tags">
         <span class="skill-tag">Figma</span>
@@ -788,187 +816,129 @@
   <div class="section-label">Portfolio</div>
   <h2 class="section-title">My <span>Projects</span></h2>
   <div class="projects-grid reveal">
-
     <div class="project-card">
-      <div class="project-icon p6" style="padding: 0rem; overflow:hidden; height: 200px;">
-        <img src="images/landingsouci.png" alt="Landing Page" 
-          style="width:100%; height:100%; object-fit:contain;">
+      <div class="project-icon p6" style="padding:0; overflow:hidden; height:200px;">
+        <img src="images/landingsouci.png" alt="Landing Page" style="width:100%; height:100%; object-fit:contain;">
       </div>
       <div class="project-body">
         <div class="project-name">Landing Page PT. Souci Indoprima</div>
         <p class="project-desc">Website perusahaan lengkap dengan fitur Info Lowongan Kerja, Form Lamaran Online, dan tampilan utama dari web PT Souci Indoprima.</p>
-        <div class="project-tags">
-          <span class="project-tag">Next Js</span>
-          <span class="project-tag">MySQL</span>
-        </div>
+        <div class="project-tags"><span class="project-tag">Next Js</span><span class="project-tag">MySQL</span></div>
         <div style="display:flex; flex-direction:column; gap:0.3rem;">
           <button class="btn-sertifikat" onclick="openProject('images/landing_page_souci.pdf', 'Landing Page Souci', 'pdf')">Lihat Project →</button>
           <button class="btn-sertifikat" onclick="openProject('https://github.com/zakiafwanulhilmilubis/Landing-Page-Souci-Indoprima', 'Link Github Code Project', 'url')">Lihat Code Github →</button>
         </div>
       </div>
     </div>
-
     <div class="project-card">
-      <div class="project-icon p6" style="padding: 0rem; overflow:hidden; height: 200px;">
-        <img src="images/admin_landing_project.png" alt="Landing Page" 
-          style="width:100%; height:100%; object-fit:contain;">
+      <div class="project-icon p6" style="padding:0; overflow:hidden; height:200px;">
+        <img src="images/admin_landing_project.png" alt="Admin Landing Page" style="width:100%; height:100%; object-fit:contain;">
       </div>
       <div class="project-body">
-        <div class="project-name"> Admin Landing Page PT. Souci Indoprima</div>
+        <div class="project-name">Admin Landing Page PT. Souci Indoprima</div>
         <p class="project-desc">Website admin landing page untuk memonitoring seluruh aktivitas yang terjadi di landing page seperti Lowongan pekerjaan, pelamar, dokumen lamaran, dll.</p>
-        <div class="project-tags">
-          <span class="project-tag">Laravel</span>
-          <span class="project-tag">PHP</span>
-          <span class="project-tag">CSS</span>
-          <span class="project-tag">MySQL</span>
-        </div>
+        <div class="project-tags"><span class="project-tag">Laravel</span><span class="project-tag">PHP</span><span class="project-tag">CSS</span><span class="project-tag">MySQL</span></div>
         <div style="display:flex; flex-direction:column; gap:0.3rem;">
           <button class="btn-sertifikat" onclick="openProject('images/admin_landing_souci.pdf', 'Admin Landing Page Souci', 'pdf')">Lihat Project →</button>
           <button class="btn-sertifikat" onclick="openProject('https://github.com/zakiafwanulhilmilubis/Admin-Landing-Page-Souci-Indoprima', 'Link Github Code Project', 'url')">Lihat Code Github →</button>
         </div>
       </div>
     </div>
-
-     <div class="project-card">
-      <div class="project-icon p2" style="padding: 0rem; overflow:hidden; height: 200px;">
-        <img src="images/shohabiyah_project.png" alt="Web Ash-Shohabiyah" 
-          style="width:100%; height:100%; object-fit:contain;">
+    <div class="project-card">
+      <div class="project-icon p2" style="padding:0; overflow:hidden; height:200px;">
+        <img src="images/shohabiyah_project.png" alt="Web Ash-Shohabiyah" style="width:100%; height:100%; object-fit:contain;">
       </div>
       <div class="project-body">
         <div class="project-name">Website Yayasan Ash-Shohabiyah</div>
         <p class="project-desc">Website lengkap untuk yayasan beserta fitur seleksi beasiswa. Skripsi project menggunakan PHP, HTML, CSS, JavaScript, dan MySQL.</p>
-        <div class="project-tags">
-          <span class="project-tag">PHP</span>
-          <span class="project-tag">HTML</span>
-          <span class="project-tag">MySQL</span>
-          <span class="project-tag">CSS</span>
-        </div>
+        <div class="project-tags"><span class="project-tag">PHP</span><span class="project-tag">HTML</span><span class="project-tag">MySQL</span><span class="project-tag">CSS</span></div>
         <div style="display:flex; flex-direction:column; gap:0.3rem;">
-        <button class="btn-sertifikat" onclick="openProject('images/shohabiyah.pdf', 'Website Yayasan Ash-Shohabiyah', 'pdf')">Lihat Project →</button>
-        <button class="btn-sertifikat" onclick="openProject('https://github.com/zakiafwanulhilmilubis/Pendukung_Keputusan_Ash-Shohabiyah', 'Link Github Code Project', 'url')">Lihat Code Github →</button>
+          <button class="btn-sertifikat" onclick="openProject('images/shohabiyah.pdf', 'Website Yayasan Ash-Shohabiyah', 'pdf')">Lihat Project →</button>
+          <button class="btn-sertifikat" onclick="openProject('https://github.com/zakiafwanulhilmilubis/Pendukung_Keputusan_Ash-Shohabiyah', 'Link Github Code Project', 'url')">Lihat Code Github →</button>
         </div>
       </div>
     </div>
-
     <div class="project-card">
-      <div class="project-icon p6" style="padding: 0rem; overflow:hidden; height: 200px;">
-        <img src="images/foto_project_admin_app.png" alt="Landing Page" 
-          style="width:100%; height:100%; object-fit:contain;">
+      <div class="project-icon p6" style="padding:0; overflow:hidden; height:200px;">
+        <img src="images/foto_project_admin_app.png" alt="Aplikasi Absensi" style="width:100%; height:100%; object-fit:contain;">
       </div>
       <div class="project-body">
-        <div class="project-name"> Aplikasi Absensi PT. Souci Indoprima</div>
-        <p class="project-desc"> Aplikasi yang digunakan karyawan untuk melakukan absensi karyawan setiap harinya. Melakukan pengajuan izin, lembur, dan cuti beserta dokumen pendukung.</p>
-        <div class="project-tags">
-          <span class="project-tag">Laravel</span>
-          <span class="project-tag">PHP</span>
-          <span class="project-tag">CSS</span>
-          <span class="project-tag">MySQL</span>
-        </div>
+        <div class="project-name">Aplikasi Absensi PT. Souci Indoprima</div>
+        <p class="project-desc">Aplikasi yang digunakan karyawan untuk melakukan absensi karyawan setiap harinya. Melakukan pengajuan izin, lembur, dan cuti beserta dokumen pendukung.</p>
+        <div class="project-tags"><span class="project-tag">Laravel</span><span class="project-tag">PHP</span><span class="project-tag">CSS</span><span class="project-tag">MySQL</span></div>
         <div style="display:flex; flex-direction:column; gap:0.3rem;">
           <button class="btn-sertifikat" onclick="openProject('images/admin_absensi_app.pdf', 'Admin Landing Page Souci', 'pdf')">Lihat Project →</button>
           <button class="btn-sertifikat" onclick="openProject('https://github.com/zakiafwanulhilmilubis/souci-absensi', 'Link Github Code Project', 'url')">Lihat Code Github →</button>
         </div>
       </div>
     </div>
-
     <div class="project-card">
-      <div class="project-icon p6" style="padding: 0rem; overflow:hidden; height: 200px;">
-        <img src="images/Admin_absensi.png" alt="Landing Page" 
-          style="width:100%; height:100%; object-fit:contain;">
+      <div class="project-icon p6" style="padding:0; overflow:hidden; height:200px;">
+        <img src="images/Admin_absensi.png" alt="Admin Absensi" style="width:100%; height:100%; object-fit:contain;">
       </div>
       <div class="project-body">
-        <div class="project-name"> Admin Absensi PT. Souci Indoprima</div>
+        <div class="project-name">Admin Absensi PT. Souci Indoprima</div>
         <p class="project-desc">Website admin absensi untuk memonitoring seluruh aktivitas karyawan seperti absensi, izin, sakit, dll.</p>
-        <div class="project-tags">
-          <span class="project-tag">Laravel</span>
-          <span class="project-tag">PHP</span>
-          <span class="project-tag">CSS</span>
-          <span class="project-tag">MySQL</span>
-        </div>
+        <div class="project-tags"><span class="project-tag">Laravel</span><span class="project-tag">PHP</span><span class="project-tag">CSS</span><span class="project-tag">MySQL</span></div>
         <div style="display:flex; flex-direction:column; gap:0.3rem;">
           <button class="btn-sertifikat" onclick="openProject('images/admin_absensi_web.pdf', 'Admin Landing Page Souci', 'pdf')">Lihat Project →</button>
           <button class="btn-sertifikat" onclick="openProject('https://github.com/zakiafwanulhilmilubis/Admin-Absensi', 'Link Github Code Project', 'url')">Lihat Code Github →</button>
         </div>
       </div>
     </div>
-
     <div class="project-card">
-      <div class="project-icon p1" style="padding: 0rem; overflow:hidden; height: 200px;">
-        <img src="images/life.png" alt="Green Life App" 
-          style="width:100%; height:100%; object-fit:contain;">
+      <div class="project-icon p1" style="padding:0; overflow:hidden; height:200px;">
+        <img src="images/life.png" alt="Green Life App" style="width:100%; height:100%; object-fit:contain;">
       </div>
       <div class="project-body">
         <div class="project-name">Green Life App — Prototype</div>
         <p class="project-desc">Prototype aplikasi mobile untuk mata kuliah Human Computer Interaction menggunakan Figma, berfokus pada UI/UX dalam pengelolaan sampah.</p>
-        <div class="project-tags">
-          <span class="project-tag">Figma</span>
-          <span class="project-tag">UI/UX</span>
-          <span class="project-tag">HCI</span>
-        </div>
+        <div class="project-tags"><span class="project-tag">Figma</span><span class="project-tag">UI/UX</span><span class="project-tag">HCI</span></div>
         <button class="btn-sertifikat" onclick="openProject('images/green.pdf', 'Green Life App — Prototype', 'pdf')">Lihat Prototype →</button>
       </div>
     </div>
-
     <div class="project-card">
-      <div class="project-icon p3" style="padding: 0rem; overflow:hidden; height: 200px;">
-        <img src="images/undangan.jpeg" alt="Undangan Online" 
-          style="width:100%; height:100%; object-fit:contain;">
+      <div class="project-icon p3" style="padding:0; overflow:hidden; height:200px;">
+        <img src="images/undangan.jpeg" alt="Undangan Online" style="width:100%; height:100%; object-fit:contain;">
       </div>
       <div class="project-body">
         <div class="project-name">Undangan Online Pernikahan</div>
         <p class="project-desc">Website undangan digital yang digunakan untuk mengundang para tamu secara online untuk acara Ibnu & Intan, dibuat menggunakan HTML, CSS, dan JavaScript.</p>
-        <div class="project-tags">
-          <span class="project-tag">HTML</span>
-          <span class="project-tag">CSS</span>
-          <span class="project-tag">JavaScript</span>
-        </div>
+        <div class="project-tags"><span class="project-tag">HTML</span><span class="project-tag">CSS</span><span class="project-tag">JavaScript</span></div>
         <div style="display:flex; flex-direction:column; gap:0.3rem;">
           <button class="btn-sertifikat" onclick="openProject('https://zakiafwanulhilmilubis.github.io/Wedding-Ibnu-Intan/', 'Undangan Online Pernikahan', 'embed')">Lihat Undangan →</button>
           <button class="btn-sertifikat" onclick="openProject('https://github.com/zakiafwanulhilmilubis/Wedding-Ibnu-Intan', 'Undangan Online Pernikahan', 'url')">Lihat Code Github →</button>
         </div>
       </div>
     </div>
-
     <div class="project-card">
-      <div class="project-icon p4" style="padding: 0rem; overflow:hidden; height: 200px;">
-        <img src="images/brain.jpg" alt="Prediksi Tumor Otak" 
-          style="width:100%; height:100%; object-fit:contain;">
+      <div class="project-icon p4" style="padding:0; overflow:hidden; height:200px;">
+        <img src="images/brain.jpg" alt="Prediksi Tumor Otak" style="width:100%; height:100%; object-fit:contain;">
       </div>
       <div class="project-body">
         <div class="project-name">Sistem Prediksi Tumor Otak</div>
         <p class="project-desc">Sistem Machine Learning untuk memprediksi jenis tumor otak (Glioma, Meningioma, Pituitary) menggunakan Google Colab dan dataset Kaggle.</p>
-        <div class="project-tags">
-          <span class="project-tag">Python</span>
-          <span class="project-tag">ML</span>
-          <span class="project-tag">Google Colab</span>
-        </div>
+        <div class="project-tags"><span class="project-tag">Python</span><span class="project-tag">ML</span><span class="project-tag">Google Colab</span></div>
         <div style="display:flex; flex-direction:column; gap:0.3rem;">
           <button class="btn-sertifikat" onclick="openProject('https://colab.research.google.com/drive/1U81U70B9c684Le_7jEaDWhv82_ttGDNm', 'Sistem Prediksi Tumor Otak', 'url')">Lihat System →</button>
           <button class="btn-sertifikat" onclick="openProject('https://www.kaggle.com/datasets/denizkavi1/brain-tumor', 'Database Tumor Otak', 'url')">Lihat Database →</button>
         </div>
       </div>
     </div>
-
     <div class="project-card">
-      <div class="project-icon p5" style="padding: 0rem; overflow:hidden; height: 200px;">
-        <img src="images/revou.jpg" alt="Mini Course" 
-          style="width:100%; height:100%; object-fit:contain;">
+      <div class="project-icon p5" style="padding:0; overflow:hidden; height:200px;">
+        <img src="images/revou.jpg" alt="Mini Course" style="width:100%; height:100%; object-fit:contain;">
       </div>
       <div class="project-body">
         <div class="project-name">Data Analysis — RevoU Mini Course</div>
         <p class="project-desc">Study case analisis data penjualan menggunakan PostgreSQL: penjualan tertinggi per tahun, negara terbaik, dan produk terlaris Sep 2023 – Mar 2024.</p>
-        <div class="project-tags">
-          <span class="project-tag">SQL</span>
-          <span class="project-tag">PostgreSQL</span>
-          <span class="project-tag">Data Analysis</span>
-        </div>
+        <div class="project-tags"><span class="project-tag">SQL</span><span class="project-tag">PostgreSQL</span><span class="project-tag">Data Analysis</span></div>
         <div style="display:flex; flex-direction:column; gap:0.3rem;">
           <button class="btn-sertifikat" onclick="openProject('images/mini_course.pdf', 'Data Analysis — RevoU Mini Course', 'pdf')">Lihat Course →</button>
           <button class="btn-sertifikat" onclick="openProject('images/sertif_minicourse.pdf', 'Data Analysis — RevoU Mini Course', 'pdf')">Lihat Sertifikat →</button>
         </div>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -977,7 +947,6 @@
   <div class="section-label">Achievements</div>
   <h2 class="section-title">My <span>Certificates</span></h2>
   <div class="cert-grid reveal">
-
     <div class="cert-card">
       <div class="cert-icon">🏢</div>
       <div>
@@ -985,7 +954,6 @@
         <button class="cert-link" onclick="openCertificate('images/sertifikat-telkom.pdf', 'Sertifikat Magang PT Telkom Indonesia')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="cert-card">
       <div class="cert-icon">🏛️</div>
       <div>
@@ -993,7 +961,6 @@
         <button class="cert-link" onclick="openCertificate('images/sertifikat-bpjsk.pdf', 'Sertifikat Magang BPJS Ketenagakerjaan')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="cert-card">
       <div class="cert-icon">🎖️</div>
       <div>
@@ -1001,7 +968,6 @@
         <button class="cert-link" onclick="openCertificate('images/sertifikat-imilkom.pdf', 'Anggota Humas — Himpunan Mahasiswa Jurusan')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="cert-card">
       <div class="cert-icon">🎉</div>
       <div>
@@ -1009,7 +975,6 @@
         <button class="cert-link" onclick="openCertificate('images/sertifikat-csa.pdf', 'Panitia Humas — Ulang Tahun Jurusan ke-20')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="cert-card">
       <div class="cert-icon">❤️</div>
       <div>
@@ -1017,7 +982,6 @@
         <button class="cert-link" onclick="openCertificate('images/sertifikat-Charity.pdf', 'Panitia — Acara Charity Fest')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="cert-card">
       <div class="cert-icon">🎓</div>
       <div>
@@ -1025,7 +989,6 @@
         <button class="cert-link" onclick="openCertificate('images/sertifikat-refactor.pdf', 'Panitia — Penyambutan Mahasiswa Baru 2023')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="cert-card">
       <div class="cert-icon">🥉</div>
       <div>
@@ -1033,7 +996,6 @@
         <button class="cert-link" onclick="openCertificate('images/sertifikat-juara3.pdf', 'Juara 3 — Tarung Derajat Kejurda Umum Sumut 2019')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="cert-card">
       <div class="cert-icon">🥇</div>
       <div>
@@ -1041,7 +1003,6 @@
         <button class="cert-link" onclick="openCertificate('images/sertifikat-juara1.pdf', 'Juara 1 — Tarung Derajat Kejurda Pelajar Piala GUBSU 2019')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="cert-card">
       <div class="cert-icon">🥈</div>
       <div>
@@ -1049,7 +1010,6 @@
         <button class="cert-link" onclick="openCertificate('images/sertifikat-juara2.pdf', 'Juara 2 — Tarung Derajat Kejurda Pelajar Piala GUBSU 2019')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="cert-card">
       <div class="cert-icon">📖</div>
       <div>
@@ -1057,7 +1017,6 @@
         <button class="cert-link" onclick="openCertificate('images/sertifikat-1juz.pdf', 'Hafalan 1 Juz (Juz Amma) — 2016 & 2019')">Lihat Sertifikat →</button>
       </div>
     </div>
-
     <div class="cert-card">
       <div class="cert-icon">📗</div>
       <div>
@@ -1065,7 +1024,6 @@
         <button class="cert-link" onclick="openCertificate('images/sertifikat-2juz.pdf', 'Hafalan 2 Juz (Juz Amma & Al-Baqarah)')">Lihat Sertifikat →</button>
       </div>
     </div>
-
   </div>
 </section>
 
@@ -1079,38 +1037,29 @@
       diskusi project, atau sekadar berkenalan!
     </p>
     <div class="contact-items">
-      <div class="contact-items">
-        <div class="contact-item">
-          <div class="contact-circle" style="background:none; padding:0; overflow:hidden;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" 
-                style="width:48px; height:48px; object-fit:contain;">
-          </div>
-          <a href="tel:+628880763640" class="contact-text">+62 888-0763-6440</a>
+      <div class="contact-item">
+        <div class="contact-circle" style="background:none; padding:0; overflow:hidden;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg" style="width:48px; height:48px; object-fit:contain;">
         </div>
-
-        <div class="contact-item">
-          <div class="contact-circle" style="background:none; padding:0; overflow:hidden;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" 
-                style="width:48px; height:48px; object-fit:contain;">
-          </div>
-          <a href="mailto:zakilubis39@gmail.com" class="contact-text">zakilubis39@gmail.com</a>
+        <a href="tel:+628880763640" class="contact-text">+62 888-0763-6440</a>
+      </div>
+      <div class="contact-item">
+        <div class="contact-circle" style="background:none; padding:0; overflow:hidden;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/7/7e/Gmail_icon_%282020%29.svg" style="width:48px; height:48px; object-fit:contain;">
         </div>
-
-        <div class="contact-item">
-          <div class="contact-circle" style="background:none; padding:0; overflow:hidden;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" 
-                style="width:48px; height:48px; object-fit:contain; border-radius:12px;">
-          </div>
-          <a href="https://instagram.com/zakihilmilubis" target="_blank" class="contact-text">@zakihilmilubis</a>
+        <a href="mailto:zakilubis39@gmail.com" class="contact-text">zakilubis39@gmail.com</a>
+      </div>
+      <div class="contact-item">
+        <div class="contact-circle" style="background:none; padding:0; overflow:hidden;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png" style="width:48px; height:48px; object-fit:contain; border-radius:12px;">
         </div>
-
-        <div class="contact-item">
-          <div class="contact-circle" style="background:none; padding:0; overflow:hidden;">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Google_Maps_Logo_2020.svg" 
-                style="width:48px; height:48px; object-fit:contain;">
-          </div>
-          <span class="contact-text">Jl. Jermal XII Gg. Anggrek II, Medan</span>
+        <a href="https://instagram.com/zakihilmilubis" target="_blank" class="contact-text">@zakihilmilubis</a>
+      </div>
+      <div class="contact-item">
+        <div class="contact-circle" style="background:none; padding:0; overflow:hidden;">
+          <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Google_Maps_Logo_2020.svg" style="width:48px; height:48px; object-fit:contain;">
         </div>
+        <span class="contact-text">Jl. Jermal XII Gg. Anggrek II, Medan</span>
       </div>
     </div>
   </div>
@@ -1134,6 +1083,22 @@
     navbar.classList.toggle('scrolled', window.scrollY > 50);
   });
 
+  /* ─── HAMBURGER MENU ─── */
+  const hamburger = document.getElementById('hamburger');
+  const mobileMenu = document.getElementById('mobile-menu');
+
+  hamburger.addEventListener('click', () => {
+    hamburger.classList.toggle('open');
+    mobileMenu.classList.toggle('open');
+    document.body.style.overflow = mobileMenu.classList.contains('open') ? 'hidden' : '';
+  });
+
+  function closeMobileMenu() {
+    hamburger.classList.remove('open');
+    mobileMenu.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
   /* ─── REVEAL ON SCROLL ─── */
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
@@ -1156,17 +1121,11 @@
   function openProject(url, title, type) {
     modalTitle.textContent = title;
     openLink.href = url;
-
-    if (type === 'pdf') {
-      frame.style.display = 'block';
-      urlPreview.style.display = 'none';
-      frame.src = url;
-    } else if (type === 'embed') {
+    if (type === 'pdf' || type === 'embed') {
       frame.style.display = 'block';
       urlPreview.style.display = 'none';
       frame.src = url;
     } else {
-      // URL eksternal: tampilkan panel preview
       frame.style.display = 'none';
       urlPreview.style.display = 'flex';
       previewTitle.textContent = title;
@@ -1174,14 +1133,11 @@
       previewBtn.href = url;
       previewBtn.textContent = 'Buka Sertifikat →';
     }
-
     modal.classList.add('active');
     document.body.style.overflow = 'hidden';
   }
 
-  // Alias untuk tombol sertifikat — URL bitly dibuka lewat preview panel
   function openCertificate(url, title) {
-    // Cek apakah URL adalah PDF lokal atau link eksternal
     const isPdf = url.endsWith('.pdf');
     openProject(url, title, isPdf ? 'pdf' : 'url');
   }
@@ -1192,13 +1148,11 @@
     document.body.style.overflow = '';
   }
 
-  // Tutup saat klik area gelap di luar modal
-  modal.addEventListener('click', function (e) {
+  modal.addEventListener('click', function(e) {
     if (e.target === modal) closeCertificate();
   });
 
-  // Tutup dengan tombol Escape
-  document.addEventListener('keydown', function (e) {
+  document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeCertificate();
   });
 </script>

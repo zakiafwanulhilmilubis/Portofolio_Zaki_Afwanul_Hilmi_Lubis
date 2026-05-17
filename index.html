@@ -547,8 +547,34 @@
 
     /* Modal */
     .modal-box { height: 92vh; border-radius: 12px; }
-    .modal-title { font-size: 0.85rem; }
-    .modal-btn-open { font-size: 0.72rem; padding: 0.3rem 0.6rem; }
+    .modal-header {
+      padding: 0.75rem 1rem;
+      gap: 0.5rem;
+    }
+    .modal-title {
+      font-size: 0.8rem;
+      flex: 1;
+      min-width: 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+    .modal-actions {
+      flex-shrink: 0;
+      gap: 0.5rem;
+    }
+    .modal-btn-open {
+      font-size: 0.7rem;
+      padding: 0.3rem 0.55rem;
+      white-space: nowrap;
+    }
+    .modal-close {
+      width: 30px;
+      height: 30px;
+      min-width: 30px;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
 
     /* Section title margin */
     .section-title { margin-bottom: 2rem; }
@@ -1119,28 +1145,42 @@
   const previewBtn   = document.getElementById('modal-preview-btn');
 
   function openProject(url, title, type) {
-    modalTitle.textContent = title;
-    openLink.href = url;
-    if (type === 'pdf' || type === 'embed') {
-      frame.style.display = 'block';
-      urlPreview.style.display = 'none';
-      frame.src = url;
-    } else {
-      frame.style.display = 'none';
-      urlPreview.style.display = 'flex';
-      previewTitle.textContent = title;
-      previewUrl.textContent = url;
-      previewBtn.href = url;
-      previewBtn.textContent = 'Buka Sertifikat →';
-    }
-    modal.classList.add('active');
-    document.body.style.overflow = 'hidden';
+  const isMobile = window.innerWidth <= 768;
+  modalTitle.textContent = title;
+  openLink.href = url;
+
+  // Di mobile, PDF tidak bisa dirender iframe → paksa jadi url preview
+  if (type === 'pdf' && isMobile) {
+    type = 'url';
   }
 
+  if (type === 'pdf' || type === 'embed') {
+    frame.style.display = 'block';
+    urlPreview.style.display = 'none';
+    frame.src = url;
+  } else {
+    frame.style.display = 'none';
+    urlPreview.style.display = 'flex';
+    previewTitle.textContent = title;
+    previewUrl.textContent = url;
+    previewBtn.href = url;
+    previewBtn.textContent = url.endsWith('.pdf') ? 'Buka PDF →' : 'Buka Link →';
+  }
+
+  modal.classList.add('active');
+  document.body.style.overflow = 'hidden';
+}
+
   function openCertificate(url, title) {
-    const isPdf = url.endsWith('.pdf');
+  const isMobile = window.innerWidth <= 768;
+  const isPdf = url.endsWith('.pdf');
+  
+  if (isPdf && isMobile) {
+    openProject(url, title, 'url');
+  } else {
     openProject(url, title, isPdf ? 'pdf' : 'url');
   }
+}
 
   function closeCertificate() {
     modal.classList.remove('active');

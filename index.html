@@ -651,6 +651,8 @@
       </div>
     </div>
     <iframe id="cert-frame" src="" title="PDF Viewer"></iframe>
+    <img id="cert-image" src="" alt="Sertifikat"
+      style="display:none; width:100%; height:100%; object-fit:contain; flex:1; background:#f0eff0;">
     <div id="modal-url-preview">
       <div class="preview-icon">🔗</div>
       <div id="modal-preview-title" class="preview-title"></div>
@@ -865,7 +867,17 @@
         <p class="project-desc">Website admin landing page untuk memonitoring seluruh aktivitas yang terjadi di landing page seperti Lowongan pekerjaan, pelamar, dokumen lamaran, dll.</p>
         <div class="project-tags"><span class="project-tag">Laravel</span><span class="project-tag">PHP</span><span class="project-tag">CSS</span><span class="project-tag">MySQL</span></div>
         <div style="display:flex; flex-direction:column; gap:0.3rem;">
-          <button class="btn-sertifikat" onclick="openProject('images/admin_landing_souci.pdf', 'Admin Landing Page Souci', 'pdf')">Lihat Project →</button>
+          <button class="btn-sertifikat" onclick="openProject(
+              [
+                'buktiPorto/admin_landing_souci_Page_1.png',
+                'buktiPorto/admin_landing_souci_Page_2.png',
+                'buktiPorto/admin_landing_souci_Page_3.png',
+                'buktiPorto/admin_landing_souci_Page_4.png'
+              ],
+              'Admin Landing Page PT. Souci Indoprima',
+              'gallery'
+            )">Lihat Project →
+          </button>
           <button class="btn-sertifikat" onclick="openProject('https://github.com/zakiafwanulhilmilubis/Admin-Landing-Page-Souci-Indoprima', 'Link Github Code Project', 'url')">Lihat Code Github →</button>
         </div>
       </div>
@@ -1143,32 +1155,88 @@
   const previewTitle = document.getElementById('modal-preview-title');
   const previewUrl   = document.getElementById('modal-preview-url');
   const previewBtn   = document.getElementById('modal-preview-btn');
+  const certImage    = document.getElementById('cert-image');
 
   function openProject(url, title, type) {
   const isMobile = window.innerWidth <= 768;
   modalTitle.textContent = title;
-  openLink.href = url;
+  openLink.href = Array.isArray(url) ? url[0] : url;
 
-  // Di mobile, PDF tidak bisa dirender iframe → paksa jadi url preview
-  if (type === 'pdf' && isMobile) {
-    type = 'url';
-  }
-
-  if (type === 'pdf' || type === 'embed') {
-    frame.style.display = 'block';
-    urlPreview.style.display = 'none';
-    frame.src = url;
-  } else {
+  // Multi-image (array PNG) — scroll vertikal
+  if (Array.isArray(url)) {
     frame.style.display = 'none';
+    urlPreview.style.display = 'none';
+    certImage.style.display = 'none';
+
+    // Buat/reset gallery container
+    let gallery = document.getElementById('modal-gallery');
+    if (!gallery) {
+      gallery = document.createElement('div');
+      gallery.id = 'modal-gallery';
+      gallery.style.cssText = `
+        flex: 1; overflow-y: auto; display: flex;
+        flex-direction: column; gap: 8px;
+        padding: 12px; background: #f0eff0;
+      `;
+      document.querySelector('.modal-box').appendChild(gallery);
+    }
+    gallery.innerHTML = '';
+    gallery.style.display = 'flex';
+
+    url.forEach((src, i) => {
+      const img = document.createElement('img');
+      img.src = src;
+      img.alt = `${title} — halaman ${i + 1}`;
+      img.style.cssText = `
+        width: 100%; border-radius: 6px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.12);
+        display: block;
+      `;
+      gallery.appendChild(img);
+    });
+
+  } else if (type === 'image' || url.match(/\.(png|jpg|jpeg|webp)$/i)) {
+    frame.style.display = 'none';
+    urlPreview.style.display = 'none';
+    hideGallery();
+    certImage.style.display = 'block';
+    certImage.src = url;
+
+  } else if (type === 'pdf' && isMobile) {
+    frame.style.display = 'none';
+    certImage.style.display = 'none';
+    hideGallery();
     urlPreview.style.display = 'flex';
     previewTitle.textContent = title;
     previewUrl.textContent = url;
     previewBtn.href = url;
-    previewBtn.textContent = url.endsWith('.pdf') ? 'Buka PDF →' : 'Buka Link →';
+    previewBtn.textContent = 'Buka PDF →';
+
+  } else if (type === 'pdf' || type === 'embed') {
+    frame.style.display = 'block';
+    certImage.style.display = 'none';
+    urlPreview.style.display = 'none';
+    hideGallery();
+    frame.src = url;
+
+  } else {
+    frame.style.display = 'none';
+    certImage.style.display = 'none';
+    hideGallery();
+    urlPreview.style.display = 'flex';
+    previewTitle.textContent = title;
+    previewUrl.textContent = url;
+    previewBtn.href = url;
+    previewBtn.textContent = 'Buka Link →';
   }
 
   modal.classList.add('active');
   document.body.style.overflow = 'hidden';
+}
+
+function hideGallery() {
+  const gallery = document.getElementById('modal-gallery');
+  if (gallery) gallery.style.display = 'none';
 }
 
   function openCertificate(url, title) {
@@ -1183,10 +1251,13 @@
 }
 
   function closeCertificate() {
-    modal.classList.remove('active');
-    frame.src = '';
-    document.body.style.overflow = '';
-  }
+  modal.classList.remove('active');
+  frame.src = '';
+  certImage.src = '';
+  certImage.style.display = 'none';
+  hideGallery();
+  document.body.style.overflow = '';
+}
 
   modal.addEventListener('click', function(e) {
     if (e.target === modal) closeCertificate();
